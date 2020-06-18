@@ -8,6 +8,7 @@ import { mergeStyles } from 'office-ui-fabric-react/lib/Styling';
 import RibbonButton from './RibbonButton';
 import { IContextualMenuProps, Stack, IStackTokens } from 'office-ui-fabric-react';
 import { Tabs } from 'antd';
+import Page from './Page';
 
 const { TabPane } = Tabs;
 
@@ -66,17 +67,7 @@ export default function Ribbon(props) {
           </PivotItem>
         )}
     </Pivot>
-    <Tabs defaultActiveKey="1">
-    <TabPane tab="Tab 1" key="1">
-      Content of Tab Pane 1
-    </TabPane>
-    <TabPane tab="Tab 2" key="2">
-      Content of Tab Pane 2
-    </TabPane>
-    <TabPane tab="Tab 3" key="3">
-      Content of Tab Pane 3
-    </TabPane>
-  </Tabs>
+    <Page/>
    </React.Fragment>
   )
 }
