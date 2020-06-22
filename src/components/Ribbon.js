@@ -1,30 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Label, ILabelStyles } from 'office-ui-fabric-react/lib/Label';
 import { Pivot, PivotItem } from 'office-ui-fabric-react/lib/Pivot';
-import { IStyleSet } from 'office-ui-fabric-react/lib/Styling';
 import { initializeIcons } from '@uifabric/icons';
 import { mergeStyles } from 'office-ui-fabric-react/lib/Styling';
 import RibbonButton from './RibbonButton';
-import { IContextualMenuProps, Stack, IStackTokens } from 'office-ui-fabric-react';
-import { Tabs } from 'antd';
-import Page from './Page';
-
+import { Tabs, Button } from 'antd';
+import 'antd/dist/antd.css';
+import ToolBar from './ToolBar';
 const { TabPane } = Tabs;
 
 const initialPanes = [
-  { title: 'Tab 1', content: 'Content of Tab 1', key: '1' },
+  { title: 'Tab 1', content: 'Content of Tab 11', key: '1' },
   { title: 'Tab 2', content: 'Content of Tab 2', key: '2' },
   {
     title: 'Tab 3',
     content: 'Content of Tab 3',
-    key: '3',
-    closable: false,
+    key: '3'
   },
 ];
-
-
-
 initializeIcons();
 
 const labelStyles =  {
@@ -43,47 +36,172 @@ const iconClass = mergeStyles({
       border: '1px solid black'
 
   })
-
-  const verticalStyle = {
-    root: {
-        height: '200px',
-        border: '10px solid black',
-        fontFamily: 'Monaco, Menlo, Consolas',
-        fontSize: '30px',
+  export const buttonsData = {
+    add: {
+      action: () => alert('New'),
+      disabled: false
+    },
+    edit: {
+      action: () => alert('Edit')
+    },
+    refresh: {
+      action: () => alert('Refresh')
+    },
+    search: {
+      action: () => alert('Search')
+    },
+    columns: {
+      action: () => alert('Columns')
+    },
+    print: {
+      action: () => alert('Print')
+    },
+    attachments: {
+      items: [
+        {
+        key: 'attachment1',
+        text: "Attachment1",
+        onClick: () => alert('Attachmnent1')
+      },
+      {
+        key: 'attachment2',
+        text: "Attachment2",
+        onClick: () => alert('Attachmnent2')
+      }]
+    },
+    processes: {
+      items: [
+        {
+        key: 'proccess1',
+        text: "Process1",
+        onClick: () => alert('Process1')
+      },
+      {
+        key: 'proccess2',
+        text: "Process2",
+        onClick: () => alert('Process2')
+      }]
+    },
+    processes: {
+      items: [
+        {
+        key: 'proccess1',
+        text: "Process1",
+        onClick: () => alert('Process1')
+      },
+      {
+        key: 'proccess2',
+        text: "Process2",
+        onClick: () => alert('Process2')
+      }
+      ]
+    },
+    filters: {
+      items: [
+        {
+        key: 'filter1',
+        text: "Filter1",
+        onClick: () => alert('Filter1')
+      },
+      {
+        key: 'filter2',
+        text: "Filter2",
+        onClick: () => alert('Filter2')
+      }
+      ]
     }
-
-
   };
 
-export default function Ribbon(props) {
-  return (
-    <React.Fragment>
-      <Pivot className={pivotClass}>
-        {props.tabs.map((tab) =>
-          <PivotItem key={tab.headerText} headerText={tab.headerText}>
-              {tab.buttons.map((button) => (
-                <RibbonButton handleClick={button.onClick} iconName={button.iconName} title={button.title}/>
-              ))}
-          </PivotItem>
-        )}
-    </Pivot>
-    <Page/>
-   </React.Fragment>
-  )
+  const operations = <Button>Extra Action</Button>;
+export default class Ribbon extends React.Component{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeKey: initialPanes[0].key,
+      panes: [],
+    };
+    this.addTab = this.addTab.bind(this)
+
+  }
+
+  onChange = activeKey => {
+    this.setState({ activeKey });
+  };
+
+  remove = targetKey => {
+    const { panes, activeKey } = this.state;
+    let newActiveKey = activeKey;
+    let lastIndex;
+    panes.forEach((pane, i) => {
+      if (pane.key === targetKey) {
+        lastIndex = i - 1;
+      }
+    });
+    const newPanes = panes.filter(pane => pane.key !== targetKey);
+    if (newPanes.length && newActiveKey === targetKey) {
+      if (lastIndex >= 0) {
+        newActiveKey = newPanes[lastIndex].key;
+      } else {
+        newActiveKey = newPanes[0].key;
+      }
+    }
+    this.setState({
+      panes: newPanes,
+      activeKey: newActiveKey,
+    });
+  };
+
+  onEdit = (targetKey, action) => {
+    this[action](targetKey);
+  };
+
+  addTab = (tab = {}) => {
+    console.log(tab)
+    if (this.state.panes.find(pane => pane.key === tab.key)) {
+      this.setState({ activeKey: tab.key});
+    } else {
+      this.setState((state, props) => ({
+        panes: [...state.panes, {
+            title: tab.title,
+            toolbar: tab.toolbar,
+            key: tab.key,
+            content: tab.content
+          }],
+        activeKey: tab.key
+      }));
+    }
+  }
+
+  render() {
+    const { panes, activeKey } = this.state;
+    return (
+      <>
+        <Pivot className={pivotClass}>
+          {this.props.tabs.map((tab) =>
+            <PivotItem key={tab.headerText} headerText={tab.headerText}>
+                {tab.buttons.map((button) => (
+                  <RibbonButton key={button.title} toolbar={button.toolbar} onClick={() => this.addTab(button.tab)} iconName={button.iconName} title={button.title}/>
+                ))}
+            </PivotItem>
+          )}
+        </Pivot>
+        <Tabs
+          type="editable-card"
+          onChange={this.onChange}
+          activeKey={activeKey}
+          onEdit={this.onEdit}
+          hideAdd={true}
+        >
+          {panes.map(pane => (
+            <TabPane tab={pane.title} key={pane.key} closable={pane.closable} tabBarExtraContent={operations}>
+              <ToolBar {...pane.toolbar}/>
+              {pane.content}
+            </TabPane>
+          ))}
+        </Tabs>
+      </>
+    )
+
+  }
 }
-
-
-const menuProps: IContextualMenuProps = {
-  items: [
-    {
-      key: 'emailMessage',
-      text: 'Email message',
-      iconProps: { iconName: 'Mail' },
-    },
-    {
-      key: 'calendarEvent',
-      text: 'Calendar event',
-      iconProps: { iconName: 'Calendar' },
-    },
-  ],
-};

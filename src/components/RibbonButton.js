@@ -35,7 +35,7 @@ const iconClass = mergeStyles({
 
 export default function RibbonButton(props){
   return (
-    <DefaultButton onClick={props.handleClick} styles={ribbonButtonStyles}>
+    <DefaultButton onClick={props.onClick} styles={ribbonButtonStyles}>
          <div className="ms-Grid" dir="ltr">
              <div className="ms-Grid-row">
                  <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12">

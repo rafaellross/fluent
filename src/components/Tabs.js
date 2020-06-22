@@ -1,17 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import { Tabs } from 'antd';
+import ToolBar from "./ToolBar";
+
 const { TabPane } = Tabs;
 
 const initialPanes = [
-  { title: 'Tab 1', content: 'Content of Tab 1', key: '1' },
-  { title: 'Tab 2', content: 'Content of Tab 2', key: '2' },
   {
-    title: 'Tab 3',
-    content: 'Content of Tab 3',
-    key: '3'
-  },
+    title: 'Welcome',
+    content: 'Content of Tab 1',
+    key: '1'
+  }
 ];
 
 export default class Page extends React.Component {
@@ -72,6 +71,7 @@ export default class Page extends React.Component {
       >
         {panes.map(pane => (
           <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
+            <ToolBar {...this.props.buttons}/>
             {pane.content}
           </TabPane>
         ))}

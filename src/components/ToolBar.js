@@ -1,33 +1,22 @@
 import React from 'react'
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
-import { IButtonProps } from 'office-ui-fabric-react/lib/Button';
 
-
-
-
-export default function ToolBar() {
-    return (
-        <CommandBar
-        items={_items}
-
-      />
-
-    )
-}
-
-
-const _items = [
+export default function ToolBar(props) {
+  const { add, edit, refresh, search, columns, print, attachments, processes, filters } = props
+  const _items = [
     {
-        key: 'newItem',
-        text: 'New',
+        key: 'addItem',
+        text: 'Add',
         iconOnly: true,
         iconProps: { iconName: 'Page' },
+        onClick: add.action
     },
     {
         key: 'editItem',
         text: 'Edit',
         iconOnly: true,
         iconProps: { iconName: 'PageHeaderEdit' },
+        onClick: edit.action
     },
     {
         key: 'refresh',
@@ -35,42 +24,36 @@ const _items = [
         iconOnly: true,
         iconProps: { iconName: 'Refresh' },
         split: true,
+        onClick: refresh.action
     },
     {
         key: 'search',
         text: '1/56', //provide quantity of records
         iconProps: { iconName: 'SeeDo' },
+        onClick: search.action
     },
     {
         key: 'columns',
         text: 'Show/Hide Columns',
         iconOnly: true,
         iconProps: { iconName: 'Waffle' },
-        split: true
+        split: true,
+        onClick: columns.action
     },
     {
         key: 'print',
         text: 'Print View',
         iconOnly: true,
         iconProps: { iconName: 'Print' },
-        split: true
+        split: true,
+        onClick: print.action
     },
     {
         key: 'attachments',
         text: 'Attachments',
         iconProps: { iconName: 'Attach' },
         subMenuProps: {
-            items: [
-              {
-                key: 'attach1',
-                text: 'Attachment 1',
-              },
-              {
-                key: 'attach2',
-                text: 'Attachment 2',
-              },
-
-            ],
+            items: attachments.items,
           },
     },
     {
@@ -78,38 +61,26 @@ const _items = [
         text: 'Processes',
         iconProps: { iconName: 'Processing' },
         subMenuProps: {
-            items: [
-              {
-                key: 'process1',
-                text: 'Process 1',
-              },
-              {
-                key: 'process2',
-                text: 'Process 2',
-              },
-
-            ],
+            items: processes.items,
           },
-
     },
     {
         key: 'filter',
         text: 'Filter',
         iconProps: { iconName: 'Filter' },
         subMenuProps: {
-            items: [
-              {
-                key: 'filter1',
-                text: 'Filter 1',
-              },
-              {
-                key: 'filter2',
-                text: 'Filter 2',
-              },
-
-            ],
-          },
-
+          items: filters.items,
+        },
     },
 
   ];
+
+    return (
+        <CommandBar
+        items={_items}
+      />
+
+    )
+}
+
+

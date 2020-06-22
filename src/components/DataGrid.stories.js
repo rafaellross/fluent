@@ -1,11 +1,11 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
-import RibbonButton from './RibbonButton';
+import DataGrid from './DataGrid';
 
 
 export default {
-  title: 'Components/Button',
-  component: RibbonButton,
+  title: 'Components/DataGrid',
+  component: DataGrid,
 };
 
 
@@ -27,4 +27,4 @@ const buttons = [
       },
  ]
 
-export const Main = () => buttons.map((button) =>(<RibbonButton key={button.title} {...button}/>));
+export const Main = () => <DataGrid/>;
