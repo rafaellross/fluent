@@ -156,19 +156,19 @@ export default class Ribbon extends React.Component{
     this[action](targetKey);
   };
 
-  addTab = (tab = {}) => {
-    console.log(tab)
-    if (this.state.panes.find(pane => pane.key === tab.key)) {
-      this.setState({ activeKey: tab.key});
+  addTab = (dataServer) => {
+    console.log(dataServer)
+    if (this.state.panes.find(pane => pane.key === dataServer.name)) {
+      this.setState({ activeKey: dataServer.name});
     } else {
       this.setState((state, props) => ({
         panes: [...state.panes, {
-            title: tab.title,
-            toolbar: tab.toolbar,
-            key: tab.key,
-            content: tab.content
+            title: dataServer.title,
+            toolbar: dataServer.toolbar,
+            key: dataServer.name,
+            content: null
           }],
-        activeKey: tab.key
+        activeKey: dataServer.name
       }));
     }
   }
@@ -180,8 +180,8 @@ export default class Ribbon extends React.Component{
         <Pivot className={pivotClass}>
           {this.props.tabs.map((tab) =>
             <PivotItem key={tab.headerText} headerText={tab.headerText}>
-                {tab.buttons.map((button) => (
-                  <RibbonButton key={button.title} toolbar={button.toolbar} onClick={() => this.addTab(button.tab)} iconName={button.iconName} title={button.title}/>
+                {tab.dataServers.map((dataServer) => (
+                  <RibbonButton key={dataServer.title} toolbar={dataServer.toolbar} onClick={() => this.addTab(dataServer)} iconName={dataServer.iconName} title={dataServer.title}/>
                 ))}
             </PivotItem>
           )}

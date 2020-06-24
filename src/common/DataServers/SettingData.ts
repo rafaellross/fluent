@@ -1,10 +1,10 @@
 import { IDataServer } from "./Interfaces";
 
-export class ClientData implements IDataServer {
-    public name = "clients";
-    public title = "Clients";
-    public headerText = "Clients";
-    public iconName = "BusinessCenterLogo";
+export class SettingsData implements IDataServer {
+    public name = "settings";
+    public title = "settings";
+    public headerText = "settings";
+    public iconName = "Settings";
     public toolbar = {
         add: {
             action: () => alert("add")

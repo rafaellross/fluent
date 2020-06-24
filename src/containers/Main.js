@@ -1,6 +1,27 @@
 import React, { useState } from 'react'
 import Ribbon from "../components/Ribbon";
 import DataGrid from '../components/DataGrid';
+import { ClientData } from "../common/DataServers/ClientData.ts";
+import { EstimateData } from '../common/DataServers/EstimateData.tsx';
+import { ReportData } from '../common/DataServers/ReportData.ts';
+import { SettingsData } from '../common/DataServers/SettingData.ts';
+
+const tabs = [
+    {
+      headerText: "Estimating",
+      dataServers: [
+        new EstimateData(),
+        new ClientData(),
+        new ReportData
+      ]
+    },
+    {
+      headerText: "Global",
+      dataServers: [
+        new SettingsData()
+      ]
+    }
+  ];
 
 const ribbonItems = [
     {
@@ -361,7 +382,7 @@ export default function Main() {
     const [pages, setPages] = useState([])
     return (
         <>
-            <Ribbon tabs={ribbonItems}/>
+            <Ribbon tabs={tabs}/>
         </>
     )
 }
